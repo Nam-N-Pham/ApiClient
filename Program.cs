@@ -100,7 +100,38 @@ namespace ApiClient
                                 }
                                 break;
                             case "programming":
+                                Console.WriteLine("How many jokes would you like? 1 or 10?");
+                                string numProgrammingJokesChoice = Console.ReadLine();
 
+                                switch (numProgrammingJokesChoice)
+                                {
+                                    case "1":
+                                        var oneProgrammingJokeResponseAsStream = await client.GetStreamAsync("https://official-joke-api.appspot.com/jokes/programming/random");
+
+                                        List<Joke> oneProgrammingJoke = await JsonSerializer.DeserializeAsync<List<Joke>>(oneProgrammingJokeResponseAsStream);
+
+                                        Console.WriteLine(oneProgrammingJoke[0].Setup);
+                                        Console.WriteLine("\n");
+                                        Console.WriteLine(oneProgrammingJoke[0].Punchline);
+
+                                        break;
+                                    case "10":
+                                        var tenProgrammingJokesResponseAsStream = await client.GetStreamAsync("https://official-joke-api.appspot.com/jokes/programming/ten");
+
+                                        List<Joke> programmingJokes = await JsonSerializer.DeserializeAsync<List<Joke>>(tenProgrammingJokesResponseAsStream);
+
+                                        for (int i = 0; i < 10; i++)
+                                        {
+                                            Console.WriteLine(i + 1);
+                                            Console.WriteLine(programmingJokes[i].Setup);
+                                            Console.WriteLine(programmingJokes[i].Punchline);
+                                        }
+
+                                        break;
+                                    case "default":
+                                        Console.WriteLine("Invalid number of jokes.");
+                                        break;
+                                }
                                 break;
                             default:
                                 Console.WriteLine("Invalid type of joke.");
